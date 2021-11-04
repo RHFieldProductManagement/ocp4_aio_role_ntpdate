@@ -1,0 +1,20 @@
+---
+# vim: set ft=ansible:
+
+- name: Enabling Chrony NTP for masters
+  k8s:
+    state: present
+    definition: "{{ lookup('file', 'masters-chrony-configuration.yaml') }}"
+  register: ntp_success
+  retries: 20
+  delay: 30
+  until: ntp_success is not failed
+
+- name: Enabling Chrony NTP for workers
+  k8s:
+    state: present
+    definition: "{{ lookup('file', 'workers-chrony-configuration.yaml') }}"
+  register: worker_ntp_success
+  retries: 20
+  delay: 30
+  until: worker_ntp_success is not failed
