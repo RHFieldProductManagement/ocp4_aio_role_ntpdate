@@ -1,0 +1,7 @@
+- name: Enable Chrony NTP config for masters and workers
+  import_tasks: deploy_machineset_ntp.yml
+  when: ocp4_aio_deploy_type == 'upi' or ocp4_aio_deploy_type == 'ipi'
+
+- name: Enable Chrony NTP config for SNO servers
+  import_tasks: deploy_machineset_ntp_sno.yml
+  when: ocp4_aio_deploy_type == 'sno'
