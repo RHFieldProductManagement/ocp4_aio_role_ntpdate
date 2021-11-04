@@ -1,6 +1,22 @@
 ---
 # vim: set ft=ansible:
 
+- name: Copy over k8s-aio env requirements.txt
+  ansible.builtin.copy:
+    src: requirements.txt
+    dest: /tmp/requirements.txt
+
+- name: "Create k8s-aio venv"
+  pip:
+    requirements: "/tmp/requirements.txt"
+    virtualenv: "/opt/virtualenvs/k8s-aio"
+    virtualenv_site_packages: true
+    virtualenv_command: "/usr/bin/virtualenv"
+
+- name: "Set Ansible interpreter to venv"
+  set_fact:
+    ansible_python_interpreter: /opt/virtualenvs/k8s-aio/bin/python
+
 - name: Enabling Chrony NTP for masters
   k8s:
     state: present
