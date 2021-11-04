@@ -1,15 +1,15 @@
 ---
 # vim: set ft=ansible:
 
-- name: Enabling image registry
+- name: Enabling Chrony NTP for SNO
   k8s:
     state: present
     kubeconfig: /root/sno-{{ item }}/auth/kubeconfig
-    definition: "{{ lookup('file', 'image-registry.yaml') }}"
-  register: imgreg_success
+    definition: "{{ lookup('file', 'masters-chrony-configuration.yaml') }}"
+  register: ntp_success
   retries: 20
   delay: 30
-  until: imgreg_success is not failed
+  until: ntp_success is not failed
   loop:
     - rhacm
     - edge1
